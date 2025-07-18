@@ -6,7 +6,7 @@ This project is a **.NET Core Web API** application. It allows users to input a 
 
 > 💡 Ideal for developers who are learning API integration or need a lightweight GitHub info service.
 
-![Project Screenshot](https://placehold.co/800x400?text=Project+Screenshot+Here)
+![Project Screenshot](gitapi.png)
 
 ---
 
