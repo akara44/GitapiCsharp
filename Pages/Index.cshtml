@@ -1,0 +1,84 @@
+﻿@page
+@model Gitapi.Pages.IndexModel
+@{
+    ViewData["Title"] = "GitHub Arama";
+}
+
+
+
+<h1 style="text-align: center; margin-bottom: 1rem;">GitHub Kullanıcısı Ara</h1>
+
+<form method="post" id="form" autocomplete="on">
+    <input type="text" id="search" name="Username" value="@Model.Username" placeholder="GitHub kullanıcı adı" required autocomplete="username" />
+    <button type="submit" id="search-btn">🔍</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="error-message">@Model.ErrorMessage</div>
+}
+
+@if (Model.GitUser != null)
+{
+    <div class="card">
+        <img src="@Model.GitUser.avatar_url" alt="Avatar" class="user-image" />
+        <div class="user-name">
+            <h2>@Model.GitUser.login</h2>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.GitUser.bio))
+        {
+            <p class="user-bio">@Model.GitUser.bio</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.GitUser.location))
+        {
+            <p class="user-details">📍 @Model.GitUser.location</p>
+        }
+
+        <div class="stats">
+            <div class="stat-item">
+                <span>Takipçiler</span>
+                <div>@Model.GitUser.followers</div>
+            </div>
+            <div class="stat-item">
+                <span>Takip</span>
+                <div>@Model.GitUser.following</div>
+            </div>
+            <div class="stat-item">
+                <span>Repolar</span>
+                <div>@Model.GitUser.public_repos</div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Repos != null && Model.Repos.Count > 0)
+{
+    <div class="card">
+        <h3 class="repo-header" style="text-align: center; margin-bottom: 1rem;">Repolar</h3>
+        <div class="repo-list">
+            @for (int i = 0; i < Model.Repos.Count; i++)
+            {
+                <div class="repo-item @(i >= 3 ? "hidden-repo" : "")">
+                    <div class="repo-name">
+                        <a href="@Model.Repos[i].html_url" target="_blank">@Model.Repos[i].name</a>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Model.Repos[i].description))
+                    {
+                        <div class="repo-desc">@Model.Repos[i].description</div>
+                    }
+                    <div class="repo-stats">
+                        <span>⭐ @Model.Repos[i].stargazers_count</span>
+                        <span>🍴 @Model.Repos[i].forks_count</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (Model.Repos.Count > 3)
+        {
+            <button id="show-more-btn" class="show-more-btn" onclick="toggleRepos()">Daha Fazla</button>
+        }
+    </div>
+}
